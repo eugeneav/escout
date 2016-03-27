@@ -1,0 +1,5 @@
+/.idea
+/escout.iml
+*.pyc
+/escout_env
+log.txt
