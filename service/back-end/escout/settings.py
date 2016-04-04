@@ -39,8 +39,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'escout.applications.gazer',
-    'escout.applications.dashboard'
+    'escout.modules.guard',
+    'escout.modules.collector',
+    'escout.modules.dashboard'
 )
 
 MIDDLEWARE_CLASSES = (

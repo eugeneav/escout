@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from escout.applications.gazer.models import Event # TODO
+from escout.modules.collector.models import Event # TODO
 
 # Main request tracking method
 def track(request, file_name):

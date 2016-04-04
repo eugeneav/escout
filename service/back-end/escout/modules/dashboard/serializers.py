@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from escout.applications.dashboard.models import Application
+from escout.modules.dashboard.models import Application
 
 
 class ApplicationSerializer(serializers.HyperlinkedModelSerializer):

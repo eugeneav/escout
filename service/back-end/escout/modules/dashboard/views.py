@@ -2,8 +2,8 @@ from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
-from escout.applications.dashboard.models import Application
-from escout.applications.dashboard.serializers import ApplicationSerializer
+from escout.modules.dashboard.models import Application
+from escout.modules.dashboard.serializers import ApplicationSerializer
 
 
 # Create your views here.

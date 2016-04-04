@@ -7,3 +7,8 @@ class Base(models.Model):
 
     class Meta:
         abstract = True
+
+# Create your models here.
+class Application(Base):
+    key = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
