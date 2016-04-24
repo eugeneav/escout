@@ -3,25 +3,25 @@ from rest_framework.renderers import JSONRenderer
 from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
 from rest_framework.parsers import JSONParser
-from modules.guard.serializers import UserSerializer
+from escout.modules.guard.serializers import UserSerializer
 
 
 def sign_in(request):
     if request.method == 'POST':
+        output = {}
         data = JSONParser().parse(request)
         user_serializer = UserSerializer(data=data)
 
         if user_serializer.is_valid():
+            validated_data = user_serializer.validated_data
+            result = user_serializer.create(validated_data)
+            output['status'] = result['status']
+        else:
+            output['status'] = 'invalid_input_data'
 
-            user_serializer.validated_data
-            user_serializer.create()
-
-        # print(data)
-
-        return JsonResponse(data)
+        return JsonResponse(output)
 
 
-# TODO
 def logout(request):
     auth_token = request.META['HTTP_AUTHORIZATION']
     token_parts = auth_token.split(" ")
@@ -31,7 +31,7 @@ def logout(request):
     token_record.delete()
 
     return JsonResponse({
-        'status': 'OK',
+        'status': 'logged_out',
         'data': {
 
         }
