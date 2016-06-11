@@ -3,8 +3,10 @@ import ReactDOM from "react-dom";
 import { Router, Route, IndexRoute, hashHistory } from "react-router";
 
 import Layout from "./components/Layout";
-import Home from "./components/Home";
-import Dashboard from "./components/Dashboard";
+import Home from "./components/home/home";
+import Dashboard from "./components/dashboard/dashboard";
+import RecoverEmail from "./components/recover-email/recover-email";
+import NewPassword from "./components/new-password/new-password";
 
 const app = document.getElementById('app');
 
@@ -13,6 +15,8 @@ ReactDOM.render(
     <Route path="/" component={Layout}>
       <IndexRoute component={Home}></IndexRoute>
       <Route path="dashboard" component={Dashboard}></Route>
+      <Route path="recover-email" component={RecoverEmail}></Route>
+      <Route path="new-password" component={NewPassword}></Route>
     </Route>
   </Router>,
 app);
