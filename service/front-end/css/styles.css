@@ -1,0 +1,21 @@
+
+
+/* Login form */
+
+.grey-borders {
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+.mar-right-16 {
+    margin-right: 16px;
+}
+
+.pad-top-140 {
+    padding-top: 120px;
+}
+
+.pad-16 {
+    padding: 16px;
+}
