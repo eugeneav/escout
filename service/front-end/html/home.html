@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home</title>
+    <link type="text/css" rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>e-scout</h1>
+            <i>Remote front-end logging tool</i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="pad-top-140">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#">Sign in</a></li>
+                    <li><a href="#">Sign up</a></li>
+                </ul>
+                <div class="tab-content pad-16">
+                    <div class="tab-pane active"> <!-- Toggle active class to make tab visible or invisible-->
+                        <form>
+                            <div class="form-group">
+                                <label for="login-email">Email</label>
+                                <input id="login-email" class="form-control" type="email" name="email"
+                                       placeholder="example@mail.com"
+                                       required="required">
+                            </div>
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <input id="login-password" class="form-control" type="password" name="password"
+                                       required="required">
+                            </div>
+                            <button type="submit" class="btn btn-default">Login</button>
+                            <a href="#">Forgot password</a>
+                        </form>
+                    </div>
+                    <div class="tab-pane">
+                        <form>
+                            <div class="form-group">
+                                <label for="signup-email">Email</label>
+                                <input id="signup-email" class="form-control" type="email" name="email"
+                                       placeholder="example@mail.com"
+                                       required="required">
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-password">Password</label>
+                                <input id="signup-password" class="form-control" type="password" name="password"
+                                       required="required">
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-password-repeat">Repeat Password</label>
+                                <input id="signup-password-repeat" class="form-control" type="password" name="password"
+                                       required="required">
+                            </div>
+                            <button type="submit" class="btn btn-default">Sign in</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
