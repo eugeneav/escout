@@ -5,6 +5,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.parsers import JSONParser
 from escout.modules.guard.serializers import UserSerializer
 
+# http://tastypieapi.org/ Another one famous rest framework
+
 
 def sign_in(request):
     if request.method == 'POST':
