@@ -1,7 +1,28 @@
 import React from "react";
 import Authentication from "./authentication.component";
+import AuthStore from '../../stores/auth.store';
+import { withRouter } from 'react-router'
 
-export default class Home extends React.Component {
+
+class Home extends React.Component {
+
+    //@Override
+    componentWillMount() {
+        if(AuthStore.isAuthorized()) {
+            this.props.router.push('dashboard');
+        }
+    }
+
+    //@Override
+    componentDidMount() {
+        //TodoStore.addChangeListener(this._onChange); TODO See EventEmitter for that
+    }
+
+    //@Override
+    componentWillUnmount() {
+        //TodoStore.removeChangeListener(this._onChange);
+    }
+
     render() {
         return (
             <div className="container">
@@ -20,3 +41,5 @@ export default class Home extends React.Component {
         );
     }
 }
+
+export default withRouter(Home);

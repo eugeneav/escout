@@ -1,7 +1,9 @@
-import React from "react";
-import {Link} from 'react-router';
-import classNames from "classnames";
+import React from 'react';
+import { Link } from 'react-router';
+import classNames from 'classnames';
+import AuthActions from '../../actions/auth.actions';
 
+// TODO Input data validation needs to be added
 export default class Authentication extends React.Component {
 
     constructor() {
@@ -23,29 +25,19 @@ export default class Authentication extends React.Component {
         };
 
         this.toggleTab = this.toggleTab.bind(this);
-        this.login = this.login.bind(this);
-        this.signUp = this.signUp.bind(this);
+
         this.onLoginEmailChanged = this.onLoginEmailChanged.bind(this);
         this.onLoginPasswordChanged = this.onLoginPasswordChanged.bind(this);
+        this.login = this.login.bind(this);
+
+        this.onSignUpEmailChanged = this.onSignUpEmailChanged.bind(this);
+        this.onSignupPasswordChanged = this.onSignupPasswordChanged.bind(this);
+        this.onSignUpPasswordRepeatChanged = this.onSignUpPasswordRepeatChanged.bind(this);
+        this.signUp = this.signUp.bind(this);
     }
 
     toggleTab(tabName) {
-
-        if (tabName === 'sign-in') {
-            this.setState({
-                tabs: {
-                    showLogin: true
-                }
-            })
-        } else if (tabName === 'sign-up') {
-            this.setState({
-                tabs: {
-                    showLogin: false
-                }
-            })
-        }
-
-        return false;
+        this._toggleTab(tabName);
     }
 
     onLoginEmailChanged(event) {
@@ -66,17 +58,62 @@ export default class Authentication extends React.Component {
         });
     }
 
-    login() {
-        console.debug(this.state.loginData);
+    login(e) {
+        e.preventDefault();
+        AuthActions.login(this.state.loginData);
     }
 
-    // TODO onSignUp
-    // TODO addFlux dispatcher
-
-    signUp() {
+    onSignUpEmailChanged(event) {
+        this.setState({
+            signUpData: {
+                email: event.target.value,
+                password: this.state.signUpData.password,
+                passwordRepeat: this.state.signUpData.passwordRepeat
+            }
+        })
 
     }
 
+    onSignupPasswordChanged(event) {
+        this.setState({
+            signUpData: {
+                email: this.state.signUpData.email,
+                password: event.target.value,
+                passwordRepeat: this.state.signUpData.passwordRepeat
+            }
+        })
+    }
+
+    onSignUpPasswordRepeatChanged(event) {
+        this.setState({
+            signUpData: {
+                email: this.state.signUpData.email,
+                password: this.state.signUpData.password,
+                passwordRepeat: event.target.value
+            }
+        })
+    }
+
+    signUp(e) {
+        e.preventDefault();
+        AuthActions.signUp(this.state.signUpData)
+    }
+
+    _toggleTab(tabName) {
+        if (tabName === 'sign-in') {
+            this.setState({
+                tabs: {
+                    showLogin: true
+                }
+            })
+        } else if (tabName === 'sign-up') {
+            this.setState({
+                tabs: {
+                    showLogin: false
+                }
+            })
+        }
+    }
 
     render() {
 
@@ -103,7 +140,7 @@ export default class Authentication extends React.Component {
                 <div className="tab-content pad-16 grey-borders">
                     <div
                         className={tabSignInClass}>
-                        <form>
+                        <form onSubmit={this.login}>
                             <div className="form-group">
                                 <label htmlFor="login-email">Email</label>
                                 <input id="login-email" className="form-control" type="email" name="email"
@@ -120,36 +157,41 @@ export default class Authentication extends React.Component {
                                        value={this.state.loginData.password}
                                 />
                             </div>
-                            <button type="button" className="btn btn-default mar-right-16" onClick={this.login}>Login
+                            <button type="submit" className="btn btn-default mar-right-16">Sign in
                             </button>
                             <Link to="recover-email">Forgot password</Link>
                         </form>
                     </div>
                     <div className={tabSignUpClass}>
-                        <form>
+                        <form onSubmit={this.signUp}>
                             <div className="form-group">
                                 <label htmlFor="signup-email">Email</label>
                                 <input id="signup-email" className="form-control" type="email" name="email"
                                        placeholder="example@mail.com"
-                                       required="required"/>
+                                       required="required"
+                                       onChange={this.onSignUpEmailChanged}
+                                       value={this.state.signUpData.email}/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="signup-password">Password</label>
                                 <input id="signup-password" className="form-control" type="password"
                                        name="password"
-                                       required="required"/>
+                                       required="required"
+                                       onChange={this.onSignupPasswordChanged}
+                                       value={this.state.signUpData.password}/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="signup-password-repeat">Repeat Password</label>
                                 <input id="signup-password-repeat" className="form-control" type="password"
                                        name="password"
-                                       required="required"/>
+                                       required="required"
+                                       onChange={this.onSignUpPasswordRepeatChanged}
+                                       value={this.state.signUpData.passwordRepeat}/>
                             </div>
-                            <button type="button" className="btn btn-default" onClick={this.signUp}>Sign Up</button>
+                            <button type="submit" className="btn btn-default">Sign Up</button>
                         </form>
                     </div>
                 </div>
-
             </div>
         );
     }
