@@ -20,8 +20,8 @@ AuthStore.dispatcherIndex = AppDispatcher.register(data => {
         switch (data.action.actionType) {
             case Constants.LOGIN_TRY:
 
-                axios.post('/api/guard/login/', {
-                    email: data.action.data.email,
+                axios.post('/api/guard/login', {
+                    username: data.action.data.email, // TODO Fix on backend
                     password: data.action.data.password
                 })
                 .then(function (response) {
@@ -38,7 +38,7 @@ AuthStore.dispatcherIndex = AppDispatcher.register(data => {
         //console.debug(action);
     }
 
-    console.debug("LoginTry Action", action);
+    console.debug("LoginTry Action", data);
 });
 
 export default new AuthStore;

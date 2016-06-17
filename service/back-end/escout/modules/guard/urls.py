@@ -7,8 +7,8 @@ router = routers.DefaultRouter()
 # router.register(r'applications', views.ApplicationsViewSet, base_name="applications")
 
 urlpatterns = [
-    url(r'^sign-in/', views.sign_in),
-    url(r'^login/', authtoken_views.obtain_auth_token),
-    url(r'^logout/', views.logout),
+    url(r'^sign-in', views.sign_in),
+    url(r'^login', authtoken_views.obtain_auth_token),
+    url(r'^logout', views.logout),
     url(r'^', include(router.urls)),
 ]

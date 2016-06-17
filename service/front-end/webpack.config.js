@@ -17,16 +17,20 @@ module.exports = {
                     presets: ['es2015', 'react',]
                 }
             }
-        ],
+        ]
+    },
+    devServer: {
         proxy: {
             '/api/*': {
-                target: 'http://escout.dev',
-                secure: false,
+                target: 'http://escout.dev/',
+                secured: false,
+                changeOrigin: true,
                 rewrite: function (req) {
                     req.url = req.url.replace(/^\/api/, '');
                 }
 
             }
+
         }
     }
 };
