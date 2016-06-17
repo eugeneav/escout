@@ -4,3 +4,4 @@
 *.pyc
 /escout_env
 log.txt
+/escout/escout.iml
