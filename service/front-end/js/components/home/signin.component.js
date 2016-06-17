@@ -16,8 +16,6 @@ export default class SignIn extends React.Component {
             loginErrors: null
         };
 
-        this.errorsList = null;
-
         this.onLoginEmailChanged = this.onLoginEmailChanged.bind(this);
         this.onLoginPasswordChanged = this.onLoginPasswordChanged.bind(this);
         this.login = this.login.bind(this);
@@ -54,7 +52,7 @@ export default class SignIn extends React.Component {
                 loginErrors: null
             });
 
-            AuthActions.login(loginData);
+            AuthActions.login(this.state.loginData);
         } else {
 
             var loginErrors = result.errors.map(function (error, index) {

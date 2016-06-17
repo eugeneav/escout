@@ -4,14 +4,14 @@ import Constants from '../constants'
 class AuthActions {
 
     login(data) {
-        AppDispatcher.dispatch({
+        AppDispatcher.handleSystemActions({
             actionType: Constants.LOGIN_TRY,
             data: data
         })
     }
 
     signUp(data) {
-        AppDispatcher.dispatch({
+        AppDispatcher.handleSystemActions({
             actionType: Constants.SIGNUP_TRY,
             data: data
         })

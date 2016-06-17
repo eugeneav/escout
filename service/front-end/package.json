@@ -22,7 +22,8 @@
     "flux": "^2.1.1",
     "keymirror": "^0.1.1",
     "classnames": "^2.2.5",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "axios": "^0.12.0"
   },
   "devDependencies": {
     "webpack": "^1.12.14"
