@@ -1,6 +1,16 @@
 import React from "react";
+import AuthStore from '../../stores/auth.store';
+import {withRouter} from 'react-router'
 
-export default class Dashboard extends React.Component {
+class Dashboard extends React.Component {
+
+    componentWillMount() {
+        if (!AuthStore.isAuthorized()) {
+            console.info("Not logged in, back to home");
+            this.props.router.push('/');
+        }
+    }
+
     render() {
         return (
             <div className="container">
@@ -52,3 +62,5 @@ export default class Dashboard extends React.Component {
         );
     }
 }
+
+export default withRouter(Dashboard);

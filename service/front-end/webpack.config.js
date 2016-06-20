@@ -22,7 +22,8 @@ module.exports = {
     devServer: {
         proxy: {
             '/api/*': {
-                target: 'http://escout.dev/',
+                //target: 'http://escout.dev/',
+                target: 'http://localhost:8081/',
                 secured: false,
                 changeOrigin: true,
                 rewrite: function (req) {

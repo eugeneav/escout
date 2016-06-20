@@ -1,16 +1,24 @@
 import React from "react";
 import Authentication from "./authentication.component";
 import AuthStore from '../../stores/auth.store';
-import { withRouter } from 'react-router'
+import {withRouter} from 'react-router'
 
 
 class Home extends React.Component {
 
+    constructor() {
+        super();
+        this.signedIn = this.signedIn.bind(this);
+    }
+
     //@Override
     componentWillMount() {
-        if(AuthStore.isAuthorized()) {
+
+        if (AuthStore.isAuthorized()) {
             this.props.router.push('dashboard');
         }
+
+        AuthStore.on('LOGGED_IN', this.signedIn);
     }
 
     //@Override
@@ -20,7 +28,12 @@ class Home extends React.Component {
 
     //@Override
     componentWillUnmount() {
-        //TodoStore.removeChangeListener(this._onChange);
+        AuthStore.removeListener('LOGGED_IN', this.signedIn);
+    }
+
+    signedIn() {
+        console.debug('signed in');
+        this.props.router.push('dashboard');
     }
 
     render() {
