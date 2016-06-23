@@ -5,3 +5,13 @@
 /escout_env
 log.txt
 /escout/escout.iml
+/back-end.iml
+back-end.iml
+escout/__pycache__/
+escout/modules/__pycache__/
+escout/modules/collector/__pycache__/
+escout/modules/collector/migrations/__pycache__/
+escout/modules/dashboard/__pycache__/
+escout/modules/dashboard/migrations/__pycache__/
+escout/modules/guard/__pycache__/
+escout/modules/guard/migrations/__pycache__/
