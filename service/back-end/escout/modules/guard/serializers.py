@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate
 from django.utils.translation import ugettext_lazy as _
 
 # Get an instance of a logger
+from escout.modules.guard.models import Account
+
 logger = logging.getLogger(__name__)
 
 
@@ -28,8 +30,14 @@ class UserSerializer(serializers.Serializer):
                 'status': 'user_exists'
             }
         except User.DoesNotExist:
+
             try:
-                User.objects.create_user(username, email=email, password=password)
+                user_model = User.objects.create_user(username, email=email, password=password)
+
+                account_model = Account()
+                account_model.owner = user_model
+                account_model.save()
+
                 return {
                     'status': 'user_created'
                 }

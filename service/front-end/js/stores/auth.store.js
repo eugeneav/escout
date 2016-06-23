@@ -9,50 +9,60 @@ class AuthStore extends EventEmitter {
     }
 
     isAuthorized() {
-        // TODO Get cookie
-        // TODO Cookie has token
-        return false;
+        return localStorage.getItem(Constants.AUTH_TOKEN) !== undefined && localStorage.getItem(Constants.AUTH_TOKEN) !== null;
+    }
+
+    getToken() {
+        return localStorage.getItem(Constants.AUTH_TOKEN);
+    }
+
+    _setToken(value) {
+        localStorage.setItem(Constants.AUTH_TOKEN, value);
+    }
+
+    _cleanToken() {
+        localStorage.removeItem(Constants.AUTH_TOKEN);
     }
 
     handleActions(data) {
 
-        var that = this; // TODO Look for more beauty way
+        var that = this;
 
         if (data.source === Constants.SYSTEM_ACTION) {
             switch (data.action.actionType) {
                 case Constants.LOGIN_TRY:
 
-                        axios.post('/api/guard/sign-in', {
-                            email: data.action.data.email, // TODO Fix on backend
-                            password: data.action.data.password
-                        })
+                    // TODO Use for headers sending
+                    var config = {
+                        headers: {'X-My-Custom-Header': 'Header-Value'}
+                    };
+
+
+                    axios.post('/api/guard/sign-in', {
+                        email: data.action.data.email, // TODO Fix on backend
+                        password: data.action.data.password
+                    })
                         .then(function (response) {
-                            
-                            console.debug(response);
-                            // TODO Get token (? with some user data)
-                            // TODO Save token to storage (or cookie)
-                            console.debug('LOGGED_IN');
-                            that.emit('LOGGED_IN');
+
+                            if (response.data.status === 'ok') { // TODO Errors need to be handled in error callback
+                                that._setToken(response.data.data.token);
+                            }
+                            that.emit(Constants.SIGNED_IN);
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
 
-                        break;
+                    break;
+
                 case Constants.SIGNUP_TRY:
-                    
-                        axios.post('/api/guard/sign-up', {
-                            email: data.action.data.email, // TODO Fix on backend
-                            password: data.action.data.password
-                        })
+
+                    axios.post('/api/guard/sign-up', {
+                        email: data.action.data.email, // TODO Fix on backend
+                        password: data.action.data.password
+                    })
                         .then(function (response) {
-
-                            console.debug(response);
-                            // TODO Get token (? with some user data)
-                            // TODO Save token to storage (or cookie)
-                            console.debug('SIGNED_UP');
-                            that.emit('SIGNED_UP');
-
+                            that.emit(Constants.SIGNED_UP);
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -62,7 +72,6 @@ class AuthStore extends EventEmitter {
                 default:
                 // Do nothing
             }
-            //console.debug(action);
         }
 
         console.debug("LoginTry Action", data);

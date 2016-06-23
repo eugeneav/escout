@@ -1,4 +1,5 @@
 import React from "react";
+import Constants from '../../constants';
 import Authentication from "./authentication.component";
 import AuthStore from '../../stores/auth.store';
 import {withRouter} from 'react-router'
@@ -18,7 +19,7 @@ class Home extends React.Component {
             this.props.router.push('dashboard');
         }
 
-        AuthStore.on('LOGGED_IN', this.signedIn);
+        AuthStore.on(Constants.SIGNED_IN, this.signedIn);
     }
 
     //@Override
@@ -32,7 +33,6 @@ class Home extends React.Component {
     }
 
     signedIn() {
-        console.debug('signed in');
         this.props.router.push('dashboard');
     }
 

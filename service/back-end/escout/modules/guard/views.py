@@ -5,7 +5,6 @@ from rest_framework.parsers import JSONParser
 from escout.modules.guard.serializers import UserSerializer
 from rest_framework.serializers import ValidationError
 
-@api_view(['POST'])
 def sign_in(request):
     if request.method == 'POST':
         output = {}
@@ -38,7 +37,6 @@ def sign_in(request):
 
         return JsonResponse(output)
 
-@api_view(['POST'])
 def sign_up(request):
     if request.method == 'POST':
         output = {}
@@ -54,7 +52,6 @@ def sign_up(request):
 
         return JsonResponse(output)
 
-@api_view(['GET','POST'])
 def logout(request):
     auth_token = request.META['HTTP_AUTHORIZATION']
     token_parts = auth_token.split(" ")

@@ -1,5 +1,8 @@
 import React from "react";
 import AuthStore from '../../stores/auth.store';
+import ApplicationStore from '../../stores/application.store';
+import ApplicationActions from '../../actions/application.actions';
+import Constants from '../../constants';
 import {withRouter} from 'react-router'
 
 class Dashboard extends React.Component {
@@ -9,6 +12,16 @@ class Dashboard extends React.Component {
             console.info("Not logged in, back to home");
             this.props.router.push('/');
         }
+        
+        ApplicationStore.on(Constants.APPLICATION_DATA_RECEIVED, this.onApplicationsDataReceived);
+    }
+
+    componentDidMount() {
+        ApplicationActions.getApplications();
+    }
+
+    onApplicationsDataReceived() {
+
     }
 
     render() {
