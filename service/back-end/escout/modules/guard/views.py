@@ -1,46 +1,44 @@
-from django.shortcuts import render
-from rest_framework.renderers import JSONRenderer
 from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from escout.modules.guard.serializers import UserSerializer
 from rest_framework.serializers import ValidationError
 
-
-# http://tastypieapi.org/ Another one famous rest framework
-
-# TODO May need to be refactored
+@api_view(['POST'])
 def sign_in(request):
     if request.method == 'POST':
         output = {}
         data = JSONParser().parse(request)
         user_serializer = UserSerializer(data=data)
-        if user_serializer.is_valid():
-            validated_data = user_serializer.validated_data
 
-            try:
-                user = user_serializer.authenticate(validated_data)  # TODO
-                token, created = Token.objects.get_or_create(user=user)
-
-                output['status'] = 'ok'
-                output['data'] = {
-                    'token': token.key,
-                    'created': created
-                }
-
-            except ValidationError:
-                output['status'] = 'error'
-                output['data'] = {
-                    'error': 'User is not active or not exists'  # TODO
-                }
-
-        else:
+        if not user_serializer.is_valid():
             output['status'] = 'invalid_input_data'
-            output['status'] = user_serializer.errors
+            output['data'] = {
+                'errors': user_serializer.errors
+            }
+            return JsonResponse(output)
+
+        validated_data = user_serializer.validated_data
+
+        try:
+            user = user_serializer.authenticate(validated_data)
+            # NOTICE Do not remove created parameter, that makes token.key not available
+            token, created = Token.objects.get_or_create(user=user)
+
+            output['status'] = 'ok'
+            output['data'] = {
+                'token': token.key
+            }
+        except ValidationError:
+            output['status'] = 'user_not_exists'
+            output['data'] = {
+                'errors': ''
+            }
 
         return JsonResponse(output)
 
-
+@api_view(['POST'])
 def sign_up(request):
     if request.method == 'POST':
         output = {}
@@ -56,7 +54,7 @@ def sign_up(request):
 
         return JsonResponse(output)
 
-
+@api_view(['GET','POST'])
 def logout(request):
     auth_token = request.META['HTTP_AUTHORIZATION']
     token_parts = auth_token.split(" ")
@@ -67,7 +65,5 @@ def logout(request):
 
     return JsonResponse({
         'status': 'logged_out',
-        'data': {
-
-        }
+        'data': {}
     })
