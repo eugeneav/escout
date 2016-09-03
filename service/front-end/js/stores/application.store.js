@@ -20,11 +20,12 @@ class ApplicationStore extends EventEmitter {
                     
                     
                     // TODO Seems that it is not working - 401 Error
+                    // TODO Handle Unauthorized error
                     var config = {
                         headers: {'Authorization': 'Token ' + AuthStore.getToken()}
                     };
 
-                    axios.get('/api/dashboard/applications', config)
+                    axios.get('/api/dashboard/applications/', config)
                         .then(function (response) {
                             console.debug(response);
                             that.emit(Constants.APPLICATION_DATA_RECEIVED);

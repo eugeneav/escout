@@ -24,6 +24,16 @@ class Application(Base):
     description = models.TextField
     modified = models.DateTimeField(auto_now=True)
 
+    @classmethod
+    def create(cls, account, personal_id, title, description):
+        application = cls()
+        application.account = account
+        application.personal_id = personal_id
+        application.title = title
+        application.description = description
+        application.save()
+        return cls
+
 
 class EventType:
     application = models.ForeignKey(Application, on_delete=models.CASCADE)

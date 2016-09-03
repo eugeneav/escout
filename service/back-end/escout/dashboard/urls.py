@@ -1,7 +1,8 @@
-from django.conf.urls import url
 
-from escout.dashboard import views
+from escout.dashboard.views import ApplicationViewSet
 
-urlpatterns = [
-    url(r'^', views.get_applications, name="Get applications"),
-]
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'applications', ApplicationViewSet)
+urlpatterns = router.urls

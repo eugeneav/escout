@@ -1,9 +1,13 @@
 from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import viewsets
+from rest_framework.exceptions import ValidationError
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
+
+from escout.dashboard.models import Application
 from escout.dashboard.serializers import ApplicationSerializer
 
 """
@@ -29,14 +33,22 @@ from escout.dashboard.serializers import ApplicationSerializer
 
 """
 
-class ApplicationViewSet(viewsets.ViewSet):
 
+class ApplicationViewSet(viewsets.ViewSet):
+    queryset = Application.objects.all()
+    serializer_class = ApplicationSerializer
 
     def list(self, request):
-
         auth_token = request.auth.key
 
-        token_model = Token.objects.get(key=auth_token)
+        # NOTE Record not found exception might be required,
+        # but if token is not exit - application will return invalid token response
+
+        try:
+            token_model = Token.objects.get(key=auth_token)
+        except Token.DoesNotExist:
+            return Response([], 401)  # Rarely possible unauthorized request
+
         user_model = token_model.user
         account_model = user_model.account
         queryset = account_model.application_set.all()
@@ -45,6 +57,56 @@ class ApplicationViewSet(viewsets.ViewSet):
 
         return Response(serializer.data)
 
+    def create(self, request):
+
+        auth_token = request.auth.key
+
+        try:
+            token_model = Token.objects.get(key=auth_token)
+        except Token.DoesNotExist:
+            return Response([], 401)  # Rarely possible unauthorized request
+
+        output = {}
+        input_data = request.data
+
+        #data = JSONParser().parse(request)
+        application_serializer = ApplicationSerializer(data=input_data)
+
+        if not application_serializer.is_valid():
+            output['status'] = 'invalid_input_data'
+            output['data'] = {
+                'errors': application_serializer.errors
+            }
+            return JsonResponse(output)
+
+        validated_data = application_serializer.validated_data
+
+        try:
+            validated_data['account'] = request.user.account
+            application_info = application_serializer.create(validated_data)
+
+            output['status'] = 'ok'
+            output['data'] = application_info
+            return Response(output)
+        except ValidationError:
+            output['status'] = 'application_create_error'
+            output['data'] = {
+                'errors': ''
+            }
+
+        return Response(output, 400)
+
+    def retrieve(self, request, pk=None):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
 
 
 @api_view(['GET'])

@@ -13,7 +13,6 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 APPEND_SLASH = False
-
 
 # Application definition
 
@@ -58,7 +56,6 @@ ROOT_URLCONF = 'escout.urls'
 
 WSGI_APPLICATION = 'escout.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
@@ -72,7 +69,6 @@ DATABASES = {
         'PORT': '',
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -115,12 +111,31 @@ TEMPLATES = [
 
 STATIC_URL = '/static/'
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/var/www/escout-project/escout/service/back-end/debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated'
+        'rest_framework.permissions.IsAuthenticated',
     ),
 
     'PAGE_SIZE': 10
