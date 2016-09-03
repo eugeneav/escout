@@ -4,6 +4,7 @@ import Constants from '../constants';
 import AuthStore from './auth.store';
 import axios from 'axios';
 
+// TODO Next would be event store
 class ApplicationStore extends EventEmitter {
 
     constructor() {
@@ -16,7 +17,9 @@ class ApplicationStore extends EventEmitter {
         if (data.source === Constants.SYSTEM_ACTION) {
             switch (data.action.actionType) {
                 case Constants.GET_ACCOUNT_APPLICATIONS:
-
+                    
+                    
+                    // TODO Seems that it is not working - 401 Error
                     var config = {
                         headers: {'Authorization': 'Token ' + AuthStore.getToken()}
                     };

@@ -23,8 +23,6 @@ SECRET_KEY = '-luwt%&*dt4fs)l=!cvfe*whqjon@y#4ht!jqnh23lyjrs_heb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 APPEND_SLASH = False
@@ -41,9 +39,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'escout.modules.guard',
-    'escout.modules.collector',
-    'escout.modules.dashboard'
+    'escout.guard',
+    'escout.collector',
+    'escout.dashboard'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -66,10 +64,15 @@ WSGI_APPLICATION = 'escout.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'escout',
+        'USER': 'escout',
+        'PASSWORD': 'escout',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -84,6 +87,28 @@ USE_L10N = True
 
 USE_TZ = True
 
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            # insert your TEMPLATE_DIRS here
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/

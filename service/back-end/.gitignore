@@ -1,4 +1,3 @@
-/db.sqlite3
 /.idea
 /escout.iml
 *.pyc
@@ -9,9 +8,9 @@ log.txt
 back-end.iml
 escout/__pycache__/
 escout/modules/__pycache__/
-escout/modules/collector/__pycache__/
-escout/modules/collector/migrations/__pycache__/
-escout/modules/dashboard/__pycache__/
-escout/modules/dashboard/migrations/__pycache__/
-escout/modules/guard/__pycache__/
-escout/modules/guard/migrations/__pycache__/
+escout/collector/__pycache__/
+escout/collector/migrations/__pycache__/
+escout/dashboard/__pycache__/
+escout/dashboard/migrations/__pycache__/
+escout/guard/__pycache__/
+escout/guard/migrations/__pycache__/

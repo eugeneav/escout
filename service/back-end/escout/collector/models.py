@@ -1,5 +1,7 @@
 from django.db import models
 
+
+# TODO Add application id!!!
 # Create your models here.
 class Event(models.Model):
     name = models.CharField(max_length=256)
@@ -7,4 +9,3 @@ class Event(models.Model):
     description = models.TextField
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-

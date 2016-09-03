@@ -1,12 +1,13 @@
 import logging
-from django.db import DatabaseError
-from rest_framework import serializers
-from django.contrib.auth.models import User
+
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+from django.db import DatabaseError
 from django.utils.translation import ugettext_lazy as _
+from rest_framework import serializers
 
 # Get an instance of a logger
-from escout.modules.guard.models import Account
+from escout.guard.models import Account
 
 logger = logging.getLogger(__name__)
 

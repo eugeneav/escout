@@ -1,6 +1,7 @@
-from django.db import models
 from django.contrib.auth.models import User
-from escout.modules.guard.models import Account
+from django.db import models
+
+from escout.guard.models import Account
 
 
 class Base(models.Model):

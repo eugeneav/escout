@@ -1,9 +1,10 @@
 from django.http import HttpResponse
-from escout.modules.collector.models import Event # TODO
 
+
+# TODO Create track request example for testing
+# TODO Needs to be made async
 # Main request tracking method
 def track(request, file_name):
-
     # Collect request data
     client_id = request.GET['ci']
     client_host = request.GET['ch']
@@ -13,7 +14,7 @@ def track(request, file_name):
     record = file_name + " " + client_id + " " + client_host + " " + client_session_id + "\n"
 
     try:
-        #TODO Replace for the database recording
+        # TODO Replace for the database recording
         log_file = open('log.txt', 'a', encoding="utf-8")
         log_file.write(record)
         log_file.close()

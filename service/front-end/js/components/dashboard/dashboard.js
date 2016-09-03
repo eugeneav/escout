@@ -5,6 +5,8 @@ import ApplicationActions from '../../actions/application.actions';
 import Constants from '../../constants';
 import {withRouter} from 'react-router'
 
+
+// TODO React nested routes http://stackoverflow.com/questions/27612765/nested-routes-in-react-router
 class Dashboard extends React.Component {
 
     componentWillMount() {

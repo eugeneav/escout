@@ -1,9 +1,10 @@
 from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
-from escout.modules.guard.serializers import UserSerializer
 from rest_framework.serializers import ValidationError
+
+from escout.guard.serializers import UserSerializer
+
 
 def sign_in(request):
     if request.method == 'POST':
@@ -37,6 +38,7 @@ def sign_in(request):
 
         return JsonResponse(output)
 
+
 def sign_up(request):
     if request.method == 'POST':
         output = {}
@@ -51,6 +53,7 @@ def sign_up(request):
             output['status'] = 'invalid_input_data'
 
         return JsonResponse(output)
+
 
 def logout(request):
     auth_token = request.META['HTTP_AUTHORIZATION']
