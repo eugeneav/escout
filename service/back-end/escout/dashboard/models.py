@@ -21,7 +21,7 @@ class Application(Base):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     personal_id = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
-    description = models.TextField
+    description = models.TextField(default=None)
     modified = models.DateTimeField(auto_now=True)
 
     @classmethod

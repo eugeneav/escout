@@ -1,3 +1,6 @@
+import logging
+
+from django.db import DatabaseError
 from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import viewsets
@@ -9,6 +12,8 @@ from rest_framework.authtoken.models import Token
 
 from escout.dashboard.models import Application
 from escout.dashboard.serializers import ApplicationSerializer
+
+logger = logging.getLogger(__name__)
 
 """
 
@@ -69,7 +74,6 @@ class ApplicationViewSet(viewsets.ViewSet):
         output = {}
         input_data = request.data
 
-        #data = JSONParser().parse(request)
         application_serializer = ApplicationSerializer(data=input_data)
 
         if not application_serializer.is_valid():
@@ -77,82 +81,105 @@ class ApplicationViewSet(viewsets.ViewSet):
             output['data'] = {
                 'errors': application_serializer.errors
             }
-            return JsonResponse(output)
+            return Response(output, 400)
+
+        validated_data = application_serializer.validated_data
+        validated_data['account'] = request.user.account
+
+        try:
+            output = application_serializer.create(validated_data)
+            return Response(output)
+        except DatabaseError as error:
+            logger.error(error)
+            output['status'] = 'application_create_error'
+            return Response(output, 500)
+
+    def retrieve(self, request, pk=None):
+
+        auth_token = request.auth.key
+
+        try:
+            token_model = Token.objects.get(key=auth_token)
+        except Token.DoesNotExist:
+            return Response([], 401)
+
+        user_model = token_model.user
+        account_model = user_model.account
+
+        output = {}
+
+        try:
+            application = account_model.application_set.get(id=pk)
+            output['personal_id'] = application.personal_id
+            output['title'] = application.title
+            output['description'] = application.description
+            output['created'] = application.created
+            output['modified'] = application.modified
+            return Response(output)
+
+        except Application.DoesNotExist:
+            output['status'] = 'application_does_not_exists'
+            return Response(output, 400)
+
+    def update(self, request, pk=None):
+
+        auth_token = request.auth.key
+
+        try:
+            token_model = Token.objects.get(key=auth_token)
+        except Token.DoesNotExist:
+            return Response([], 401)  # Rarely possible unauthorized request
+
+        output = {}
+        input_data = request.data
+
+        application_serializer = ApplicationSerializer(data=input_data)
+
+        if not application_serializer.is_valid():
+            output['status'] = 'invalid_input_data'
+            output['data'] = {
+                'errors': application_serializer.errors
+            }
+            return Response(output, 400)
 
         validated_data = application_serializer.validated_data
 
         try:
-            validated_data['account'] = request.user.account
-            application_info = application_serializer.create(validated_data)
-
-            output['status'] = 'ok'
-            output['data'] = application_info
+            application_model = Application.objects.get(id=pk)
+            output = application_serializer.update(application_model, validated_data)
             return Response(output)
-        except ValidationError:
+        except Application.DoesNotExist:
             output['status'] = 'application_create_error'
             output['data'] = {
                 'errors': ''
             }
-
-        return Response(output, 400)
-
-    def retrieve(self, request, pk=None):
-        pass
-
-    def update(self, request, pk=None):
-        pass
+        except DatabaseError as error:
+            logger.error(error)
+            output['status'] = 'application_update_error'
+            return Response(output, 500)
 
     def partial_update(self, request, pk=None):
-        pass
+        return Response(status=501)
 
     def destroy(self, request, pk=None):
+        auth_token = request.auth.key
+
+        try:
+            token_model = Token.objects.get(key=auth_token)
+        except Token.DoesNotExist:
+            return Response([], 401)
+
+        user_model = token_model.user
+        account_model = user_model.account
+
+        output = {}
+
+        try:
+            account_model.application_set.get(id=pk).delete()
+            output['status'] = 'application_deleted'
+            return Response(output)
+
+        except Application.DoesNotExist:
+            output['status'] = 'application_does_not_exists'
+            return Response(output, 400)
         pass
-
-
-@api_view(['GET'])
-@permission_classes((IsAuthenticated,))
-def get_applications(request):
-    token = request.auth.key
-
-    token_model = Token.objects.get(key=token)
-    user_model = token_model.user
-    account_model = user_model.account
-    applications = account_model.application_set.all()
-
-    apps = []
-
-    for app in applications:
-        apps.append(app.title)
-
-        response = JsonResponse({
-            'status': 'OK',
-            'data': {
-                'applications': apps,
-                'offset': 0,
-                'limit': 0
-            }
-        })
-
-        response['x-ku-ku'] = "code 1"  # TODO Custom header example
-
-    return response
-
-
-def put_appliaction(request):
-    pass
-
-
-def post_application(request):
-    pass
-
-
-def update_application(request):
-    pass
-
-
-def delete_application(request):
-    pass
-
-
-def get_app_events(request):
-    pass

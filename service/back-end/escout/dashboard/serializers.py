@@ -17,22 +17,24 @@ class ApplicationSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('title', 'description')
 
     def create(self, validated_data):
-
         account = validated_data['account']
         personal_id = str(uuid.uuid1())
         title = validated_data['title']
         description = validated_data['description']
 
-        try:
-            application_model = Application.create(account, personal_id, title, description)
-            return {
-                'status': 'user_created',
-                'application': {
-                    'personal_id': personal_id
-                }
+        Application.create(account, personal_id, title, description)
+        return {
+            'status': 'application_created',
+            'application': {
+                'personal_id': personal_id
             }
-        except DatabaseError as error:
-            logger.error(error)
-            return {
-                'status': 'user_create_error'
-            }
+        }
+
+    def update(self, application_model, validated_data):
+        application_model.title = validated_data.get('title', application_model.title)
+        application_model.description = validated_data.get('description', application_model.description)
+        application_model.save()
+
+        return {
+            'status': 'application_updated'
+        }
