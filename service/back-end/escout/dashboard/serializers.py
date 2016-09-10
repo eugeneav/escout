@@ -44,7 +44,23 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
     name = serializers.CharField(max_length=256)
     type = serializers.CharField(max_length=256)
     description = serializers.CharField(required=False)
+    priority = serializers.IntegerField(required=False)
+    user_session_id = serializers.IntegerField(required=False)
+    user_timezone = serializers.IntegerField(required=False)
+    start_time = serializers.IntegerField(required=False)
+    stop_time = serializers.IntegerField(required=False)
+    created = serializers.DateTimeField()
 
     class Meta:
         model = Event
-        fields = ('name', 'type', 'description')
+        fields = (
+            'name',
+            'type',
+            'description',
+            'priority',
+            'user_session_id',
+            'user_timezone',
+            'start_time',
+            'stop_time',
+            'created'
+        )

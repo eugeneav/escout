@@ -34,14 +34,14 @@ class Application(Base):
 
 
 class Event(Base):
-    application = models.ForeignKey(Application, on_delete=models.CASCADE, related_name='Application')
-    user_session_id = models.IntegerField(default=None)
+    application = models.ForeignKey(Application, on_delete=models.CASCADE)
+    user_session_id = models.BigIntegerField(default=None)
     user_timezone = models.IntegerField(default=None)  # var hrs = -(new Date().getTimezoneOffset() / 60)
     name = models.CharField(max_length=256, default=None)
     type = models.CharField(max_length=256, default=None)
-    priority = models.SmallIntegerField
-    start_time = models.IntegerField(default=None)
-    stop_time = models.IntegerField(default=None)
+    priority = models.IntegerField(default=None)
+    start_time = models.BigIntegerField(default=None)
+    stop_time = models.BigIntegerField(default=None)
     description = models.TextField(default=None)
 
 

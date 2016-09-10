@@ -7,7 +7,7 @@ from escout.dashboard.models import Application, Event
 logger = logging.getLogger(__name__)
 
 
-# TODO Create track request example for testing
+# NOTE Tracking URL 127.0.0.1:8081/collector/__tf.gif?pid=bf1f2920-7773-11e6-9395-0800279eb82c&usi=5938498940&utz=-180&nm=click&tp=action&p=2&stt=1473527002230&spt=1473527027805&dsc=click on a button
 # TODO Needs to be made async
 # Main request tracking method
 def track(request, file_name):
@@ -28,6 +28,7 @@ def track(request, file_name):
             event.start_time = request.GET.get('stt', None)
             event.stop_time = request.GET.get('spt', None)
             event.description = request.GET.get('dsc', None)
+            event.save()
 
         except (Application.DoesNotExist, DatabaseError) as error:
             logger.error(error)
