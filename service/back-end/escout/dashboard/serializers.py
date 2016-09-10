@@ -1,9 +1,9 @@
 import uuid
 import logging
 
-from django.db import DatabaseError
 from rest_framework import serializers
 from escout.dashboard.models import Application
+from escout.dashboard.models import Event
 
 logger = logging.getLogger(__name__)
 
@@ -38,3 +38,13 @@ class ApplicationSerializer(serializers.HyperlinkedModelSerializer):
         return {
             'status': 'application_updated'
         }
+
+
+class EventSerializer(serializers.HyperlinkedModelSerializer):
+    name = serializers.CharField(max_length=256)
+    type = serializers.CharField(max_length=256)
+    description = serializers.CharField(required=False)
+
+    class Meta:
+        model = Event
+        fields = ('name', 'type', 'description')

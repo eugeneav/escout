@@ -11,8 +11,6 @@ class Base(models.Model):
         abstract = True
 
 
-# Create your models here.
-
 class CommonEventType:
     name = models.CharField(max_length=255)
 
@@ -35,18 +33,26 @@ class Application(Base):
         return cls
 
 
-class EventType:
-    application = models.ForeignKey(Application, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-
-
 class Event(Base):
-    application = models.ForeignKey(Application, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255)
-    message = models.TextField
+    application = models.ForeignKey(Application, on_delete=models.CASCADE, related_name='Application')
+    user_session_id = models.IntegerField(default=None)
+    user_timezone = models.IntegerField(default=None)  # var hrs = -(new Date().getTimezoneOffset() / 60)
+    name = models.CharField(max_length=256, default=None)
+    type = models.CharField(max_length=256, default=None)
     priority = models.SmallIntegerField
+    start_time = models.IntegerField(default=None)
+    stop_time = models.IntegerField(default=None)
+    description = models.TextField(default=None)
+
+
+# TODO Application team feature. Low Priority
+'''
+    1. Find user by email
+    2. Add user to a team
+    3. User see applications and their events where he is a team member
+'''
 
 
 class Team(Base):
     application = models.ForeignKey(Application, on_delete=models.CASCADE)
-    publications = models.ManyToManyField(User)
+    users = models.ManyToManyField(User)

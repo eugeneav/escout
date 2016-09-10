@@ -1,17 +1,14 @@
 import logging
 
 from django.db import DatabaseError
-from django.http import JsonResponse
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import viewsets
-from rest_framework.exceptions import ValidationError
-from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 
 from escout.dashboard.models import Application
-from escout.dashboard.serializers import ApplicationSerializer
+from escout.dashboard.serializers import ApplicationSerializer, EventSerializer
+
+from escout.dashboard.models import Event
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +19,7 @@ logger = logging.getLogger(__name__)
     TODO:
     1. Setup debug of backend app [done]
     2. Use PostgresSQL on backend [done]
-    4. Implement Application CRUD according to django-rest-framework guides
+    4. Implement Application CRUD according to django-rest-framework guides [done] Note: Tests required
     5. Implement Events CRUD according to django-rest-framework guides
     6. Finish data collector (use async Python features)
     6. Find out how to test django app
@@ -183,3 +180,40 @@ class ApplicationViewSet(viewsets.ViewSet):
             output['status'] = 'application_does_not_exists'
             return Response(output, 400)
         pass
+
+
+class EventViewSet(viewsets.ViewSet):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+
+    def list(self, request):
+        auth_token = request.auth.key
+
+        # NOTE Record not found exception might be required,
+        # but if token is not exit - application will return invalid token response
+
+        try:
+            token_model = Token.objects.get(key=auth_token)
+        except Token.DoesNotExist:
+            return Response([], 401)  # Rarely possible unauthorized request
+
+        application_id = request.GET.get('aid', False)
+        if not application_id:
+            return Response(status=400)
+
+        user_model = token_model.user
+        account_model = user_model.account
+
+        output = {}
+
+        try:
+            application_model = account_model.application_set.get(id=application_id)
+        except Application.DoesNotExist:
+            output['status'] = 'application_does_not_exists'
+            return Response(output, 400)
+
+        queryset = application_model.event_set.all()
+
+        serializer = EventSerializer(queryset, many=True)
+
+        return Response(serializer.data)

@@ -14,3 +14,4 @@ escout/dashboard/__pycache__/
 escout/dashboard/migrations/__pycache__/
 escout/guard/__pycache__/
 escout/guard/migrations/__pycache__/
+/debug.log
