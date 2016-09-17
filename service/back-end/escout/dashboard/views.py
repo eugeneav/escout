@@ -20,10 +20,11 @@ logger = logging.getLogger(__name__)
     1. Setup debug of backend app [done]
     2. Use PostgresSQL on backend [done]
     4. Implement Application CRUD according to django-rest-framework guides [done] Note: Tests required
-    5. Implement Events CRUD according to django-rest-framework guides
-    6. Finish data collector (use async Python features)
+    5. Implement Events CRUD according to django-rest-framework guides [done]
+    6. Finish data collector [done] (use async Python features - Celery)
     6. Find out how to test django app
     7. Refactor application according to Python and Django best practises
+    8. Use Fabric for deploy
 
     Feature in future:
     1. Email actions tracking?

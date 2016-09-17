@@ -8,9 +8,9 @@ router = routers.DefaultRouter()
 # router.register(r'applications', views.ApplicationsViewSet, base_name="applications")
 
 urlpatterns = [
-    url(r'sign-in', views.sign_in, name='Sign In'),
-    url(r'^sign-up', views.sign_up, name='Sign Up'),
-    url(r'^login', authtoken_views.obtain_auth_token, name='Login'),
-    url(r'^logout', views.logout, name='Logout'),
+    url(r'sign-in', views.sign_in, name='sign-in'),
+    url(r'^sign-up', views.sign_up, name='sign-up'),
+    # url(r'^login', authtoken_views.obtain_auth_token, name='login'),
+    url(r'^logout', views.logout, name='logout'),
     # url(r'^', include(router.urls), name=''),
 ]
