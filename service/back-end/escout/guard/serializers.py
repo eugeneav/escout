@@ -37,6 +37,8 @@ class UserSerializer(serializers.Serializer):
 
                 account_model = Account()
                 account_model.owner = user_model
+                account_model.title = ''
+                account_model.description = ''
                 account_model.save()
 
                 return {

@@ -1,3 +1,4 @@
+import json
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 
@@ -59,24 +60,66 @@ class AccountModelTests(TestCase):
 
 
 class AuthorizationTests(APITestCase):
+    _token = ''
+
     def setUp(self):
-        User.objects.create_user('johndoe', 'johndoe@test.net', 'johndoepassword')
         pass
 
-    def test_sign_in(self):
+    def test_sign_in_fail(self):
         url = reverse('sign-in')
         data = {'email': 'johndoe@test.net', 'password': 'johndoepassword'}
         response = self.client.post(url, data, format='json')
+
+        print(json.loads(response.content.decode("utf-8")))
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # self.assertIn('token', response.content)
+        self.assertIn(b'invalid_input_data', response.content)
 
     def test_sign_up(self):
+        url = reverse('sign-up')
+        data = {'email': 'johndoe@test.net', 'password': 'johndoepassword'}
+        response = self.client.post(url, data, format='json')
+
+        response_data = json.loads(response.content.decode("utf-8"))
+        print(response_data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)  # TODO Change status code to 201?
+        self.assertIn(b'user_created', response.content)
+
+    def test_sign_in_success(self):
+        url_sign_up = reverse('sign-up')
+        data = {'email': 'johndoe@test.net', 'password': 'johndoepassword'}
+        self.client.post(url_sign_up, data, format='json')
+
         url = reverse('sign-in')
         data = {'email': 'johndoe@test.net', 'password': 'johndoepassword'}
         response = self.client.post(url, data, format='json')
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)  # TODO Change status code to 201?
-        # self.assert( 'user_created', response.content)
+        response_data = json.loads(response.content.decode("utf-8"))
+        print(response_data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn(b'token', response.content)
+
+    def test_logout(self):
+
+        url_sign_up = reverse('sign-up')
+        data = {'email': 'johndoe@test.net', 'password': 'johndoepassword'}
+        self.client.post(url_sign_up, data, format='json')
+
+        url_sign_in = reverse('sign-in')
+        response = self.client.post(url_sign_in, data, format='json')
+
+        response_data = json.loads(response.content.decode("utf-8"))
+
+        url = reverse('logout')
+        response = self.client.post(url, {}, format='json', HTTP_AUTHORIZATION="Token " + response_data['data']['token'])
+
+        response_data = json.loads(response.content.decode("utf-8"))
+        print(response_data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn(b'logged_out', response.content)
 
     def tearDown(self):
         pass
