@@ -16,6 +16,10 @@ class AuthStore extends EventEmitter {
         return localStorage.getItem(Constants.AUTH_TOKEN);
     }
 
+    logout() {
+        this._cleanToken();
+    }
+
     _setToken(value) {
         localStorage.setItem(Constants.AUTH_TOKEN, value);
     }

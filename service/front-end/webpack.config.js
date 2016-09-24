@@ -5,19 +5,19 @@ var webpack = require('webpack');
 // @NOTE webpack-dev-server --progress --colors for launch
 
 /**
-   TODO
+ TODO
 
-    !!! Use ES6 only
+ !!! Use ES6 only
 
-    1. See Webpack + React config. Find Production config
-    2. Simplify development process launching
-    3. Finish authentication logic (Logout feature doesn't work)
-    4. Implement Applications business logic and UI (See nested routing https://github.com/reactjs/react-router/tree/master/examples)
-    4.1 Create Create application screen 
-    5. Implement Events business logic and UI 
-    6. Write some tests
-    7. Make some refactoring
-    8. Deploy on company server for general purpose usage
+ 1. See Webpack + React config. Find Production config
+ 2. Simplify development process launching
+ 3. Finish authentication logic (Logout feature doesn't work)
+ 4. Implement Applications business logic and UI (See nested routing https://github.com/reactjs/react-router/tree/master/examples)
+ 4.1 Create Create application screen
+ 5. Implement Events business logic and UI
+ 6. Write some tests
+ 7. Make some refactoring
+ 8. Deploy on company server for general purpose usage
 
  */
 
@@ -48,7 +48,7 @@ module.exports = {
                 }
 
             }
-
-        }
+        },
+        historyApiFallback: true
     }
 };

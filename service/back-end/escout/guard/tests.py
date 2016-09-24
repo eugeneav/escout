@@ -102,7 +102,6 @@ class AuthorizationTests(APITestCase):
         self.assertIn(b'token', response.content)
 
     def test_logout(self):
-
         url_sign_up = reverse('sign-up')
         data = {'email': 'johndoe@test.net', 'password': 'johndoepassword'}
         self.client.post(url_sign_up, data, format='json')

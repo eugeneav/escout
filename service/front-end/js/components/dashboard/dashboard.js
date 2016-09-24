@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from 'react-router';
 import AuthStore from '../../stores/auth.store';
 import ApplicationStore from '../../stores/application.store';
 import ApplicationActions from '../../actions/application.actions';
@@ -7,14 +8,22 @@ import {withRouter} from 'react-router'
 
 
 // TODO React nested routes http://stackoverflow.com/questions/27612765/nested-routes-in-react-router
+// http://ricostacruz.com/cheatsheets/react-router.html
 class Dashboard extends React.Component {
+
+    constructor() {
+        super();
+
+        this.logout = this.logout.bind(this)
+    }
 
     componentWillMount() {
         if (!AuthStore.isAuthorized()) {
             console.info("Not logged in, back to home");
             this.props.router.push('/');
         }
-        
+        //this.props.router.push('dashboard/projects');
+
         ApplicationStore.on(Constants.APPLICATION_DATA_RECEIVED, this.onApplicationsDataReceived);
     }
 
@@ -26,6 +35,11 @@ class Dashboard extends React.Component {
 
     }
 
+    logout() {
+        AuthStore.logout();
+        this.props.router.push('/');
+    }
+
     render() {
         return (
             <div className="container">
@@ -35,7 +49,7 @@ class Dashboard extends React.Component {
                     </div>
                     <div className="navbar-header pull-right">
                         <ul className="nav navbar-nav">
-                            <li><a href="/logout">Logout</a></li>
+                            <li><a onClick={this.logout}>Logout</a></li>
                         </ul>
                     </div>
 
@@ -43,33 +57,12 @@ class Dashboard extends React.Component {
                 <div className="row">
                     <div className="col-md-4">
                         <ul className="nav nav-pills nav-stacked">
-                            <li className="active"><a href="/#">Projects</a></li>
-                            <li><a href="/#">Settings</a></li>
+                            <li className="active"><Link to="/dashboard/projects">Projects</Link></li>
+                            <li><Link to="/dashboard/settings">Settings</Link></li>
                         </ul>
                     </div>
                     <div className="col-md-8">
-                        <div className="list-group">
-                            <a className="list-group-item active" href="#">Project 1</a>
-                            <a className="list-group-item" href="#">Project 2<span className="badge">14</span></a>
-                            <a className="list-group-item" href="#">Project 3<span className="badge">2</span></a>
-                            <a className="list-group-item" href="#">Project 4<span className="badge">4</span></a>
-                            <a className="list-group-item" href="#">Project 5<span className="badge">9</span></a>
-                            <a className="list-group-item" href="#">Project 6</a>
-                        </div>
-
-                        <div className="list-group">
-                            <li className="list-group-item list-group-item-success">Log ok</li>
-                            <li className="list-group-item list-group-item-warning">Log ok</li>
-                            <li className="list-group-item list-group-item-info">Log ok</li>
-                            <li className="list-group-item list-group-item-danger">Log ok</li>
-                        </div>
-
-                        <nav>
-                            <ul className="pager">
-                                <li><a href="#">Previous</a></li>
-                                <li><a href="#">Next</a></li>
-                            </ul>
-                        </nav>
+                        {this.props.children}
                     </div>
 
                 </div>
@@ -79,3 +72,11 @@ class Dashboard extends React.Component {
 }
 
 export default withRouter(Dashboard);
+
+
+// <div className="list-group">
+//     <li className="list-group-item list-group-item-success">Log ok</li>
+//     <li className="list-group-item list-group-item-warning">Log ok</li>
+//     <li className="list-group-item list-group-item-info">Log ok</li>
+//     <li className="list-group-item list-group-item-danger">Log ok</li>
+// </div>
