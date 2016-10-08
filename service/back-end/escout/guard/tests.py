@@ -70,7 +70,7 @@ class AuthorizationTests(APITestCase):
         data = {'email': 'johndoe@test.net', 'password': 'johndoepassword'}
         response = self.client.post(url, data, format='json')
 
-        print(json.loads(response.content.decode("utf-8")))
+        #print(json.loads(response.content.decode("utf-8")))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn(b'invalid_input_data', response.content)
@@ -81,7 +81,7 @@ class AuthorizationTests(APITestCase):
         response = self.client.post(url, data, format='json')
 
         response_data = json.loads(response.content.decode("utf-8"))
-        print(response_data)
+        #print(response_data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)  # TODO Change status code to 201?
         self.assertIn(b'user_created', response.content)
@@ -96,7 +96,7 @@ class AuthorizationTests(APITestCase):
         response = self.client.post(url, data, format='json')
 
         response_data = json.loads(response.content.decode("utf-8"))
-        print(response_data)
+        #print(response_data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn(b'token', response.content)
@@ -115,7 +115,7 @@ class AuthorizationTests(APITestCase):
         response = self.client.post(url, {}, format='json', HTTP_AUTHORIZATION="Token " + response_data['data']['token'])
 
         response_data = json.loads(response.content.decode("utf-8"))
-        print(response_data)
+        #print(response_data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn(b'logged_out', response.content)

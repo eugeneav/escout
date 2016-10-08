@@ -22,10 +22,11 @@ class ApplicationSerializer(serializers.HyperlinkedModelSerializer):
         title = validated_data['title']
         description = validated_data['description']
 
-        Application.create(account, personal_id, title, description)
+        application = Application.create(account, personal_id, title, description)
         return {
             'status': 'application_created',
             'application': {
+                'id':application.id,
                 'personal_id': personal_id
             }
         }

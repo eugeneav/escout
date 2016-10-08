@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
     4. Implement Application CRUD according to django-rest-framework guides [done] Note: Tests required
     5. Implement Events CRUD according to django-rest-framework guides [done]
     6. Finish data collector [done] (use async Python features - Celery)
-    6. Find out how to test django app
+    6. Find out how to test django app [done] Working on tests
     7. Refactor application according to Python and Django best practises
     8. Use Fabric for deploy
 
@@ -200,7 +200,7 @@ class EventViewSet(viewsets.ViewSet):
 
         application_id = request.GET.get('aid', False)
         if not application_id:
-            return Response(status=400)
+            return Response(status=400) # FIXME Works only last return in a method!
 
         user_model = token_model.user
         account_model = user_model.account

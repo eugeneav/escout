@@ -30,7 +30,7 @@ class Application(Base):
         application.title = title
         application.description = description
         application.save()
-        return cls
+        return application
 
 
 class Event(Base):
