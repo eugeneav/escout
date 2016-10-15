@@ -30,17 +30,15 @@ def track(request, file_name):
             event.description = request.GET.get('dsc', None)
             event.save()
 
+            logger.info("Event was recorded")
+
         except (Application.DoesNotExist, DatabaseError) as error:
             logger.error(error)
         finally:
-            return _respond()
 
+            gif_file = open("escout/static/file/__tf.gif", "rb")
+            file_data = gif_file.read()
 
-# Prepare and return fake image
-def _respond():
-    gif_file = open("escout/static/file/__tf.gif", "rb")
-    file_data = gif_file.read()
+            logger.info("Image is ready for send")
 
-    response = HttpResponse(file_data, content_type="image/gif")
-
-    return response
+            return HttpResponse(file_data, content_type="image/gif")

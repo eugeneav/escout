@@ -78,9 +78,26 @@ def logout(request):
 
 # TODO Get password recovery token
 def get_password_recovery_token(request):
+    # TODO Generate token
+    # TODO Send email
+    # TODO Notify about successfull send
     return JsonResponse({}, status=501)
 
 
 # TODO Recover password
 def recover_password(request):
+    # TODO Change user password
+
+    return JsonResponse({}, status=501)
+
+
+def check_token(request):
+    # TODO Check a token if it is valid
+    return JsonResponse({}, status=501)
+
+
+# TODO Recover password
+def change_password(request):
+    # TODO Change user password
+
     return JsonResponse({}, status=501)
