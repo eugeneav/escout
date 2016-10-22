@@ -16,6 +16,13 @@ class AuthActions {
             data: data
         })
     }
+
+    recoverPasswordByEmail(data) {
+        AppDispatcher.handleSystemActions({
+            actionType: Constants.RECOVER_PASSWORD_TRY,
+            data: data
+        })
+    }
 }
 
 export default new AuthActions;

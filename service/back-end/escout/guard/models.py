@@ -8,3 +8,9 @@ class Account(models.Model):
     description = models.TextField(default=None)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+
+class PasswordRecoverToken(models.Model):
+    email = models.CharField(max_length=255)
+    token = models.TextField(default=None)
+    created = models.DateTimeField(auto_now_add=True)

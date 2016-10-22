@@ -1,10 +1,21 @@
+import time
+import json
 import logging
+import hashlib
 
 from django.http import JsonResponse
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.conf import settings
+
 from rest_framework.authtoken.models import Token
 from rest_framework.parsers import JSONParser
 from rest_framework.serializers import ValidationError
 from escout.guard.serializers import UserSerializer
+
+from escout.guard.models import PasswordRecoverToken
 
 logger = logging.getLogger(__name__)
 
@@ -76,17 +87,66 @@ def logout(request):
     })
 
 
-# TODO Get password recovery token
 def get_password_recovery_token(request):
-    # TODO Generate token
-    # TODO Send email
-    # TODO Notify about successfull send
-    return JsonResponse({}, status=501)
+    hostname = request.META['HTTP_HOST']
+
+    response = {
+        'status': 'recover_email_sent'
+    }
+
+    request_body_json = json.loads(request.body.decode('utf-8'))
+
+    if 'email' in request_body_json:
+        email = request_body_json.get('email', None)
+        try:
+            validate_email(email)
+
+            User.objects.get(email=email)
+
+            recover_token = PasswordRecoverToken()
+            recover_token.email = email
+            recover_token.token = hashlib.sha256((email + str(time.time())).encode('utf-8')).hexdigest()
+            recover_token.save()
+
+            send_mail(
+                'Password recovery on %s' % hostname,
+                "Dear user,\n To recover your password, please follow a link http://%s/reset/%s \nYours Escout" % (
+                    hostname, recover_token.token
+                ),
+                settings.EMAIL_HOST_USER,
+                [email],
+                fail_silently=False,
+            )
+
+            response['status'] = 'email_sent'
+
+        except ValidationError as e:
+            logger.exception(e)
+            response['status'] = 'invalid_email'
+            return JsonResponse(response, status=400)
+        except User.DoesNotExist as e:
+            logger.exception(e)
+            response['status'] = 'unknown_user'
+            return JsonResponse(response, status=400)
+        except Exception as e:
+            logger.exception(e)
+            return JsonResponse(status=500)
+
+    return JsonResponse(response)
 
 
 # TODO Recover password
 def recover_password(request):
     # TODO Change user password
+
+    token = request.POST.get('token', None)
+    new_password = request.POST.get('new_pass', None)
+    new_password_repeat = request.POST.get('new_pass_rep', None)
+
+    if token and new_password and new_password == new_password_repeat:
+        # TODO Find User id by token
+        # TODO Change password
+        pass
 
     return JsonResponse({}, status=501)
 

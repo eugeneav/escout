@@ -50,6 +50,19 @@ class Validator {
             }
         });
     }
+
+    validateRecoverData(data) {
+        return revalidator.validate(data, {
+            properties: {
+                email: {
+                    type: 'string',
+                    format: 'email',
+                    required: true,
+                    message: "Invalid email format"
+                }
+            }
+        })
+    }
 }
 
 export default new Validator;

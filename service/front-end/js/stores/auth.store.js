@@ -73,6 +73,19 @@ class AuthStore extends EventEmitter {
                         });
 
                     break;
+
+                case Constants.RECOVER_PASSWORD_TRY:
+                    axios.post('/api/guard/recover', {
+                        email: data.action.data.email
+                    })
+                        .then(function (response) {
+                            that.emit(Constants.RECOVER_EMAIL_SENT);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                    break;
                 default:
                 // Do nothing
             }

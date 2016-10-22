@@ -116,6 +116,7 @@ class EventTest(APITransactionTestCase):
             'usi': 5938498940,
             'utz': '-180',
             'nm': 'click',
+            'tp': 'action',
             'p': 2,
             'stt': '1473527002230',
             'spt': '1473527027805',

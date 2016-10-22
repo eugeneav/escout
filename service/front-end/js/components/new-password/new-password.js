@@ -1,6 +1,19 @@
 import React from "react";
 
 export default class NewPassword extends React.Component {
+
+    constructor(props) {
+        super();
+
+        console.debug("Incoming token", props.params.token)
+        
+        // TODO this.props.params.token
+        // TODO Show checking token message
+        // TODO Show new password form if valid
+        // TODO Show invalid token message if invalid
+
+    }
+
     render() {
         return (
             <div className="container">

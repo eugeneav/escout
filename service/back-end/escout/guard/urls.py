@@ -10,6 +10,7 @@ router = routers.DefaultRouter()
 urlpatterns = [
     url(r'sign-in', views.sign_in, name='sign-in'),
     url(r'^sign-up', views.sign_up, name='sign-up'),
+    url(r'^recover', views.get_password_recovery_token, name='recover-password'),
     # url(r'^login', authtoken_views.obtain_auth_token, name='login'),
     url(r'^logout', views.logout, name='logout'),
     # url(r'^', include(router.urls), name=''),

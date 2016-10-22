@@ -22,7 +22,7 @@ ReactDOM.render(
                 <Route path="settings" component={Settings} />
             </Route>
             <Route path="/recover-email" component={RecoverEmail} />
-            <Route path="/new-password" component={NewPassword} />
+            <Route path="/reset/:token" component={NewPassword} />
         </Route>
     </Router>,
     app);
